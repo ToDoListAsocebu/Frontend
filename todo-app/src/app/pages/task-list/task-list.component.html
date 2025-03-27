@@ -27,6 +27,7 @@
             <button class="btn btn-success btn-sm me-2" (click)="toggleTaskStatus(task)">
               {{ task.isCompleted ? 'Desmarcar' : 'Completar' }}
             </button>
+            <button class="btn btn-primary btn-sm me-2" (click)="editTask(task.id)">Editar</button>
             <button class="btn btn-danger btn-sm" (click)="deleteTask(task.id)">Eliminar</button>
           </td>
         </tr>

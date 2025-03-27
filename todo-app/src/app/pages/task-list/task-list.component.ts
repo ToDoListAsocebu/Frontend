@@ -4,14 +4,13 @@ import { Task } from '../../models/task.model';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule]
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
@@ -31,6 +30,10 @@ export class TaskListComponent implements OnInit {
   toggleTaskStatus(task: Task): void {
     task.isCompleted = !task.isCompleted;
     this.taskService.updateTask(task).subscribe(() => this.loadTasks());
+  }
+
+  editTask(id: number): void {
+    this.router.navigate(['/tasks/edit', id]);
   }
 
   deleteTask(taskId: number): void {
