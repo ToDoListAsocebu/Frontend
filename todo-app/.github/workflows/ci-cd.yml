@@ -8,12 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Frontend/todo-app
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
+        with:
+          path: 'source'  # Forzamos un directorio personalizado
+
+      - name: Verificar estructura (debug)
+        run: ls -R  # Muestra la estructura real de archivos
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -22,12 +24,14 @@ jobs:
 
       - name: Instalar dependencias
         run: npm install
+        working-directory: ./source/todo-app  
 
-      - name: Compilar la aplicación
+      - name: Compilar aplicación
         run: ng build --configuration=production --output-path=dist/browser
+        working-directory: ./source/todo-app
 
       - name: Desplegar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: Frontend/todo-app/dist/browser
+          folder: source/todo-app/dist/browser  
