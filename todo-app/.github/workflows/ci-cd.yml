@@ -12,6 +12,9 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      - name: Cambiar al directorio correcto
+        run: cd Frontend/todo-app
+
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
@@ -19,9 +22,11 @@ jobs:
 
       - name: Instalar dependencias
         run: npm install
+        working-directory: Frontend/todo-app
 
       - name: Compilar la aplicación
         run: ng build --configuration=production --output-path=dist/browser
+        working-directory: Frontend/todo-app
 
       - name: Desplegar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
