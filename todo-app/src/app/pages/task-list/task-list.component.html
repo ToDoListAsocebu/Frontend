@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <h2 class="text-center">Lista de Tareas</h2>
+  
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-primary" (click)="navigateToNewTask()">Agregar Tarea</button>
+    </div>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
+          <td>
+            <span class="badge" [ngClass]="{'bg-success': task.isCompleted, 'bg-warning': !task.isCompleted}">
+              {{ task.isCompleted ? 'Completado' : 'Pendiente' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm me-2" (click)="toggleTaskStatus(task)">
+              {{ task.isCompleted ? 'Desmarcar' : 'Completar' }}
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

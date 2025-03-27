@@ -1,0 +1,30 @@
+<div class="container mt-4">
+    <h2 class="text-center">{{ taskId ? 'Editar' : 'Nueva' }} Tarea</h2>
+  
+    <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+      <div class="mb-3">
+        <label for="title" class="form-label">Título</label>
+        <input id="title" type="text" class="form-control" formControlName="title">
+        <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="text-danger">
+          El título es obligatorio.
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea id="description" class="form-control" formControlName="description"></textarea>
+        <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched" class="text-danger">
+          La descripción es obligatoria.
+        </div>
+      </div>
+  
+      <div class="form-check mb-3">
+        <input id="isCompleted" type="checkbox" class="form-check-input" formControlName="isCompleted">
+        <label for="isCompleted" class="form-check-label">Completada</label>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Guardar</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="cancel()">Cancelar</button>
+    </form>
+</div>
+  
