@@ -1,64 +1,30 @@
-name: Deploy Angular to Azure
+name: Deploy Angular to GitHub Pages
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout código
         uses: actions/checkout@v4
 
-      # Verificamos la estructura del directorio para asegurarnos de que el repositorio se haya clonado correctamente
-      - name: Print directory structure
-        run: |
-          echo "Current directory structure:"
-          ls -R $GITHUB_WORKSPACE
-
-      # Mover el contenido de 'Frontend/Frontend/todo-app' a 'Frontend/todo-app'
-      - name: Move 'todo-app' to the correct directory
-        run: |
-          mv $GITHUB_WORKSPACE/Frontend/Frontend/todo-app $GITHUB_WORKSPACE/Frontend/
-
-      # Verificamos la estructura nuevamente después de mover la carpeta
-      - name: Print directory structure after move
-        run: |
-          echo "Directory structure after move:"
-          ls -R $GITHUB_WORKSPACE/Frontend
-
-      - name: Set up Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Install dependencies
+      - name: Instalar dependencias
         run: npm install
-        working-directory: $GITHUB_WORKSPACE/Frontend/todo-app  # Ahora usando la ruta correcta
 
-      - name: Build Angular app
-        run: npm run build --configuration=production
-        working-directory: $GITHUB_WORKSPACE/Frontend/todo-app  # Ruta correcta para el build
+      - name: Compilar la aplicación
+        run: ng build --configuration=production --output-path=dist/browser
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend-app:v1 .
-        working-directory: $GITHUB_WORKSPACE/Frontend/todo-app  # Ruta correcta para Docker
-
-      - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend-app:v1
-
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v3
+      - name: Desplegar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          app-name: "frontend-todoapp"
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: "${{ secrets.DOCKER_USERNAME }}/frontend-app:v1"
+          branch: gh-pages
+          folder: dist/browser
