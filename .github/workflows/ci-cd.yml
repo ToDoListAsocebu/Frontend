@@ -24,7 +24,7 @@ jobs:
 
       - name: Compilar aplicación
         run: |
-          npm run build --configuration=production --output-path=dist/browser
+          ng build --configuration=production --output-path=dist/browser
           touch dist/browser/.nojekyll
 
       - name: Desplegar en GitHub Pages
