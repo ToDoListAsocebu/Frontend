@@ -23,7 +23,9 @@ jobs:
           npm install -g @angular/cli  # Instalar CLI globalmente
 
       - name: Compilar aplicación
-        run: ng build --configuration=production --output-path=dist/browser
+        run: |
+          ng build --configuration=production --output-path=dist/browser
+          touch dist/browser/.nojekyll
 
       - name: Desplegar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
