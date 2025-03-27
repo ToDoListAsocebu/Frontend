@@ -17,10 +17,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Instalar dependencias
-        run: npm install
+      - name: Instalar dependencias y Angular CLI
+        run: |
+          npm install
+          npm install -g @angular/cli  # Instalar CLI globalmente
 
-      - name: Compilar la aplicación
+      - name: Compilar aplicación
         run: ng build --configuration=production --output-path=dist/browser
 
       - name: Desplegar en GitHub Pages
