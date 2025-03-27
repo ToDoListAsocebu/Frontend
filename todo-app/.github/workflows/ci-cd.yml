@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: Set working directory to 'todo-app'
+        run: cd todo-app
+
       - name: Install dependencies
         run: |
           cd todo-app
