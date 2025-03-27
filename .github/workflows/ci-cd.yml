@@ -24,8 +24,8 @@ jobs:
 
       - name: Compilar aplicación
         run: |
-          npm run build --configuration=production
-          touch dist/Frontend/browser/.nojekyll
+          ng build --configuration=production --base-href /Frontend/
+          touch dist/Frontend/browser.nojekyll
 
       - name: Desplegar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
