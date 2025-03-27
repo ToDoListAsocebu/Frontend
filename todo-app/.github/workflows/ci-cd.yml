@@ -13,12 +13,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Realizamos el checkout del código
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List files for debugging
-        run: ls -R /home/runner/work/Frontend  
+      # Paso de depuración para ver la estructura de directorios
+      - name: Print environment variables and directory structure
+        run: |
+          echo "HOME: $HOME"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          ls -R /home/runner/work/
+          ls -R $GITHUB_WORKSPACE
 
+      # Mover los archivos de Frontend/Frontend a Frontend (movemos 'todo-app')
+      - name: Move 'todo-app' to correct folder
+        run: |
+          mv /home/runner/work/Frontend/Frontend/todo-app /home/runner/work/Frontend/
+
+      # Ahora podemos hacer la instalación y build en la carpeta correcta
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,18 +38,18 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: /home/runner/work/Frontend/todo-app  
+        working-directory: /home/runner/work/Frontend/todo-app  # Ahora apunta a la ruta correcta
 
       - name: Build Angular app
         run: npm run build --configuration=production
-        working-directory: /home/runner/work/Frontend/todo-app  
+        working-directory: /home/runner/work/Frontend/todo-app  # Ruta correcta para el build
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend-app:v1 .
-        working-directory: /home/runner/work/Frontend/todo-app  
+        working-directory: /home/runner/work/Frontend/todo-app  # Ruta correcta para Docker
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend-app:v1
@@ -47,4 +59,4 @@ jobs:
         with:
           app-name: "frontend-todoapp"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: "${{ secrets.DOCKER_USERNAME }}/frontend-app:v1"
+          images: "${{ secrets.DOCK
