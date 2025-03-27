@@ -21,7 +21,6 @@ jobs:
         with:
           node-version: 20
 
-      # Cambiar al directorio correcto antes de instalar dependencias
       - name: Install dependencies
         run: |
           cd todo-app
