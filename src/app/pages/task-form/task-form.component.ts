@@ -30,7 +30,9 @@ export class TaskFormComponent implements OnInit {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      isCompleted: [false]
+      isCompleted: [false],
+      createdAt: [''],
+      completedAt: [null],
     });
 
     this.route.paramMap.subscribe(params => {
@@ -55,13 +57,20 @@ export class TaskFormComponent implements OnInit {
   
     if (this.taskId) {
       // Actualización de tarea
+      task.createdAt = this.taskForm.value.createdAt;
+      task.id = this.taskId
+      if (task.isCompleted) {
+        task.completedAt = new Date().toISOString(); 
+      }
+
+      console.log(task);
       this.taskService.updateTask(task).subscribe(
         () => {
           this.notificationService.success('Tarea actualizada correctamente');
           this.router.navigate(['/tasks']);
         },
         (error) => {
-          // Mostrar notificación si hubo un error
+          console.error('Error al actualizar la tarea:', error);
           const errorMessage = error.error?.message || 'Error al actualizar la tarea';
           this.notificationService.error(errorMessage);
         }
