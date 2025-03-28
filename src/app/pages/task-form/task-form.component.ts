@@ -77,6 +77,7 @@ export class TaskFormComponent implements OnInit {
       );
     } else {
       // Creación de tarea
+      task.createdAt = new Date().toISOString(); 
       this.taskService.createTask(task).subscribe(
         () => {
           this.notificationService.success('Tarea creada correctamente');
