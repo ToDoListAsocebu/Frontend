@@ -5,6 +5,7 @@ import { Task } from '../../models/task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-task-form',
@@ -21,7 +22,8 @@ export class TaskFormComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -48,13 +50,35 @@ export class TaskFormComponent implements OnInit {
 
   saveTask(): void {
     if (this.taskForm.invalid) return;
-
+  
     const task: Task = this.taskForm.value;
+  
     if (this.taskId) {
-      task.id = this.taskId;
-      this.taskService.updateTask(task).subscribe(() => this.router.navigate(['/tasks']));
+      // Actualización de tarea
+      this.taskService.updateTask(task).subscribe(
+        () => {
+          this.notificationService.success('Tarea actualizada correctamente');
+          this.router.navigate(['/tasks']);
+        },
+        (error) => {
+          // Mostrar notificación si hubo un error
+          const errorMessage = error.error?.message || 'Error al actualizar la tarea';
+          this.notificationService.error(errorMessage);
+        }
+      );
     } else {
-      this.taskService.createTask(task).subscribe(() => this.router.navigate(['/tasks']));
+      // Creación de tarea
+      this.taskService.createTask(task).subscribe(
+        () => {
+          this.notificationService.success('Tarea creada correctamente');
+          this.router.navigate(['/tasks']);
+        },
+        (error) => {
+          // Mostrar notificación si hubo un error
+          const errorMessage = error.error?.message || 'Error al crear la tarea';
+          this.notificationService.error(errorMessage);
+        }
+      );
     }
   }
 

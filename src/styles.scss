@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Personalización de colores para las notificaciones
+.toast-container {
+  .toast-success {
+    background-color: #28a745 !important; // Verde
+    color: white !important;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .toast-error {
+    background-color: #dc3545 !important; // Rojo
+    color: white !important;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .toast-warning {
+    background-color: #ffc107 !important; // Amarillo
+    color: black !important;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .toast-info {
+    background-color: #17a2b8 !important; // Azul
+    color: white !important;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Ajustar el tamaño y la posición del texto
+.toast-title {
+  font-size: 16px;
+}
+
+.toast-message {
+  font-size: 14px;
+  line-height: 1.4;
+}
