@@ -7,7 +7,7 @@ import { Task } from '../..../../models/task.model';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:8080/api/Task';
+  private apiUrl = 'https://todoapp-api-cvebdebcggc6dagz.brazilsouth-01.azurewebsites.net/api/Task';
 
   constructor(private http: HttpClient) {}
 
